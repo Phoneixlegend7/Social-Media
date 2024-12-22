@@ -7,7 +7,7 @@
 }
 
 .sidebar {
-  min-height: 100vh;
+  height: 100%;
 }
 
 .post-card {
@@ -26,4 +26,8 @@
   width: 80%;
   margin-left: 10%;
   margin-top: 50px;
+}
+
+.welcome-message {
+  margin-top: 100px;
 }

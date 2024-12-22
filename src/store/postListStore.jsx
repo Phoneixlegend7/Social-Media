@@ -2,29 +2,13 @@ import { createContext,useReducer } from "react";
 const postObjects  = {
   postlist : [],
   addPost  : () => {},
+  addPosts : () => {},
   deletePost : () => {}
 };
 export const PostlistContext = createContext(postObjects);
 
 
-const DEFAULT_POSTLIST = [{
-    id: 1,
-    title: 'Going to Mumbai',
-    body: 'Hi I am going to Mumbai',
-    reactions : 3,
-    userId: 'user-1',
-    tags : ['vacation','mumbai','fun']
-},
 
-{
-  id: 2,
-  title: 'Going to Delhi',
-  body: 'Hi I am going to Delhi',
-  reactions : 7,
-  userId: 'user-2',
-  tags : ['vacation','Delhi','pollution']
-}
-];
 
 const postListFunction=  (currPostList,action) =>{
 
@@ -35,11 +19,14 @@ const postListFunction=  (currPostList,action) =>{
     else if(action.type === 'ADD_POST') {
         updatedPostList = [action.payload,...currPostList];
     } 
+    else if(action.type === 'ADD_INITIAL_POST') {
+        updatedPostList = action.payload.posts;
+    }
     return updatedPostList;
 }
 const PostlistProvider = ({children}) =>{
 
-    const [postlist, dispatchPostlist] = useReducer(postListFunction, DEFAULT_POSTLIST);
+    const [postlist, dispatchPostlist] = useReducer(postListFunction, []);
 
     const addPost = (userId,title,body,reactions,tags) => {
         console.log(userId,title,body,reactions,tags);
@@ -56,6 +43,15 @@ const PostlistProvider = ({children}) =>{
         })
     }
 
+    const addPosts = (posts) => {
+        dispatchPostlist({
+            type : 'ADD_INITIAL_POST',
+            payload : {
+              posts
+            }
+        })
+    }
+
     const deletePost = (postId) => {
         
         dispatchPostlist({
@@ -67,7 +63,7 @@ const PostlistProvider = ({children}) =>{
    
     }
     return (
-        <PostlistContext.Provider value={{postlist: postlist, addPost: addPost, deletePost: deletePost}}>
+        <PostlistContext.Provider value={{postlist: postlist, addPost: addPost,addPosts:addPosts, deletePost: deletePost}}>
             {children}
         </PostlistContext.Provider>
     )
