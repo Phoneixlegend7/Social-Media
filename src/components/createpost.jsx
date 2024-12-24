@@ -7,7 +7,8 @@ const CreatePost = () => {
   const userId = useRef();
   const posttitle = useRef();
   const  postcontent = useRef();
-  const  postreactions = useRef();
+  const  postlikes = useRef();
+  const postdislikes = useRef();
   const  posttags = useRef();
 
 
@@ -16,16 +17,42 @@ const CreatePost = () => {
     const userIdElement = userId.current.value;
     const title = posttitle.current.value;
     const body = postcontent.current.value;
-    const reactions = postreactions.current.value;
+    const likes = postlikes.current.value;
+    const dislikes = postdislikes.current.value;
     const tags = posttags.current.value.split(' ');
 
-    addPost(userIdElement,title,body,reactions,tags);
+    const reactions = {
+      likes : likes,
+      dislikes : dislikes
+    }
+    
+  
     userId.current.value = '';
     posttitle.current.value = '';
     postcontent.current.value = '';
-    postreactions.current.value = '';
+    postlikes.current.value = '';
+    postdislikes.current.value = '';
     posttags.current.value = '';
     
+    addPost(userIdElement,title,body,reactions,tags);
+    fetch('https://dummyjson.com/posts/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId : userIdElement,
+        title : title,
+        body : body,
+        reactions : reactions,
+        tags : tags
+      })
+    })
+    .then(res => res.json())
+    .then(
+      resObj =>{
+        console.log(resObj);
+         addPost(resObj.userId,resObj.title,resObj.body,resObj.reactions,resObj.tags)}
+    
+    );
 
   }
   return (
@@ -44,8 +71,12 @@ const CreatePost = () => {
     <input type="text" ref={userId} className="form-control" id="userId"/>
   </div>
   <div className="mb-3">
-    <label htmlFor="reactions" className="form-label"><b>Number Of Reactions</b></label>
-    <input type="text" ref={postreactions} className="form-control" id="reactions"/>
+    <label htmlFor="likes" className="form-label"><b>Number Of Likes</b></label>
+    <input type="text" ref={postlikes} className="form-control" id="likes"/>
+  </div>
+  <div className="mb-3">
+    <label htmlFor="dislikes" className="form-label"><b>Number Of Dislikes</b></label>
+    <input type="text" ref={postdislikes} className="form-control" id="dislikes"/>
   </div>
   <div className="mb-3">
     <label htmlFor="tags" className="form-label"><b>Enter Tags using space </b></label>
