@@ -1,26 +1,27 @@
+import { Link } from "react-router-dom"
 
 const Sidebar = ({selectedTab,setSelectedTab}) => {
 
   return (
     <div>
     <div className="d-flex sidebar flex-column flex-shrink-0 p-3 text-bg-dark" style={{width: "280px"}}>
-    <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <Link to ="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg className="bi pe-none me-2" width="40" height="32"><use xlinkHref="#bootstrap"></use></svg>
       <span className="fs-4">Sidebar</span>
-    </a>
+    </Link>
     <hr/>
     <ul className="nav nav-pills flex-column mb-auto">
-      <li className="nav-item"  onClick={() => setSelectedTab('Home')}>
-        <a href="#" className={`nav-link ${selectedTab === 'Home' ? `active` : 'text-white' }`} aria-current="page">
+      <li className="nav-item" >
+        <Link to ="/" className={`nav-link text-white`} aria-current="page">
           <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#home"></use></svg>
           Home
-        </a>
+        </Link>
       </li>
-      <li onClick={()=> setSelectedTab('Create Post')}>
-        <a href="#" className={`nav-link ${selectedTab === 'Create Post' ? `active` : 'text-white' }`}  >
+      <li >
+        <Link to="/create-post" className={`nav-link text-white`}  >
           <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#speedometer2"></use></svg>
           Create Post
-        </a>
+        </Link>
       </li>
       
     </ul>
